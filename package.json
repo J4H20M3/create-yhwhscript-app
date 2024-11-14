@@ -1,7 +1,7 @@
 {
   "name": "create-yhwhscript-app",
-  "version": "0.1.0",
-  "description": "Set up a YHWH-script web app with one command.",
+  "version": "1.0.1",
+  "description": "Set up a YHWH-script web app for HTML Single File Components with one command.",
   "bin": {
     "create-yhwh-project": "./bin/create-yhwhscript-app.mjs"
   },
@@ -15,12 +15,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/J4H20M3/yhwh-script.git"
+    "url": "git+https://github.com/J4H20M3/create-yhwhscript-app.git"
   },
   "author": "J4H20M3 <rome@live.com>",
   "license": "Unlicense",
   "bugs": {
-    "url": "https://github.com/J4H20M3/yhwh-script/issues"
+    "url": "https://github.com/J4H20M3/create-yhwhscript-app/issues"
   },
-  "homepage": "https://github.com/J4H20M3/yhwh-script#readme"
+  "homepage": "https://github.com/J4H20M3/create-yhwhscript-app#readme"
 }

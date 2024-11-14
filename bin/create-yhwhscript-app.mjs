@@ -45,5 +45,7 @@ opendir(directory, (err, dir) => {
 
     console.log("Closing the directory");
     dir.closeSync();
+
+    console.log("Thanks for using YHWH-Script. Have fun!");
   }
 });

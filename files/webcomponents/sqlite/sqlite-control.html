@@ -1,0 +1,82 @@
+<script>
+    const { log, error } = await import('./modules/Logger.js');
+    const { SQLite } = await import('./services/SQLite.js');
+  
+    const uploadButton = $('#uploadButton');
+    uploadButton.$('click', (e) => {
+      let confirmation = prompt("Pressing OK will overwrite current database when you confirm by writing OVERWRITE.", "");
+      if (confirmation && confirmation.toLowerCase() == "overwrite") {
+        log("Overwriting current database...");
+      } else {
+        alert("Canceled.");
+        e.preventDefault();
+      }
+    });
+    uploadButton.on('change', () => {
+      // TODO accept sqlite3 files only
+      try {
+        const file = uploadButton.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.on('load', (e) => {
+          SQLite.uploadSync(e.target.result); // e.target.result is an ArrayBuffer with the file's contents
+        });
+        reader.readAsArrayBuffer(file);
+      } catch (e) {
+        error(e);
+      }
+    });
+  
+    const downloadButton = $('#downloadButton');
+    downloadButton.on('click', (e) => {
+      const downloadChannel = new BroadcastChannel("download_channel");
+      downloadChannel.onmessage = (message) => {
+        log("download_channel active...");
+        if (message.data.error) {
+          switch (message.data.error) {
+            case "SQLITE_NOMEM":
+              alert("Nothing to download. DB empty.");
+              break;
+            default:
+              alert("Unknown Error.");
+          }
+        } else {
+          const a = $('#downloadLink');
+          a.href = window.URL.createObjectURL(message.data);
+          a.download = ("jsonly.sqlite3");
+          a.on('click', function () {
+            setTimeout(function () {
+              window.URL.revokeObjectURL(a.href);
+              a.remove();
+            }, 500);
+          });
+          a.click();
+        }
+      };
+      SQLite.downloadSync();
+    });
+  
+    const resetButton = $('#resetButton');
+    resetButton.on('click', async (e) => {
+      let confirmation = prompt("Pressing OK will reset current database when you confirm by writing DELETE.", "");
+      if (confirmation && confirmation.toLowerCase() == "delete") {
+        log("Deleting current database...");
+        var root = await navigator.storage.getDirectory();
+        let db = await root.getFileHandle("jsonly.sqlite3");
+        await db.remove();
+      } else {
+        alert("Canceled.");
+        e.preventDefault();
+      }
+    });
+  </script>
+  
+  <template>
+    <span>
+      <label for="uploadButton">Upload DB</label>
+      <input type="file" id="uploadButton" />
+    </span>
+    <button type="button" id="downloadButton">Download DB</button>
+    <button type="button" id="resetButton">Reset DB</button>
+    <a id="downloadLink" hidden></a>
+  </template>

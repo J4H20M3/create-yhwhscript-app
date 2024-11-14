@@ -1,0 +1,26 @@
+{
+  "name": "yhwh-script",
+  "version": "0.1.0",
+  "description": "yhwh-script is JavaScript.",
+  "bin": {
+    "create-yhwh-project": "./bin/init-yhwh-script.mjs"
+  },
+  "keywords": [
+    "JavaScript",
+    "WebComponents",
+    "Reactive",
+    "Reausable",
+    "Single File Components",
+    "SFC"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/J4H20M3/yhwh-script.git"
+  },
+  "author": "J4H20M3 <rome@live.com>",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/J4H20M3/yhwh-script/issues"
+  },
+  "homepage": "https://github.com/J4H20M3/yhwh-script#readme"
+}

@@ -1,0 +1,25 @@
+<script>
+    let { default: Auth } = await import('./stores/Auth.js');
+
+    const loginBtn = $("#login");
+    if (loginBtn) {
+        loginBtn.on("click", function () {
+            Auth.login();
+        })
+    }
+    const logoutBtn = $("#logout");
+    if (logoutBtn) {
+        logoutBtn.on("click", function () {
+            Auth.logout();
+        })
+    }
+</script>
+
+<template>
+    <input id="login" type="button" value="LOGIN">
+    <input id="logout" type="button" value="LOGOUT">
+</template>
+
+<style>
+
+</style>

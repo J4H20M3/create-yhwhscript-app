@@ -1,9 +1,9 @@
 {
-  "name": "yhwh-script",
+  "name": "create-yhwhscript-app",
   "version": "0.1.0",
-  "description": "yhwh-script is JavaScript.",
+  "description": "Set up a YHWH-script web app with one command.",
   "bin": {
-    "create-yhwh-project": "./bin/init-yhwh-script.mjs"
+    "create-yhwh-project": "./bin/create-yhwhscript-app.mjs"
   },
   "keywords": [
     "JavaScript",

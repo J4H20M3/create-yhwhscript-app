@@ -1,6 +1,5 @@
-import { cwd } from 'node:process';
-import sqlite3InitModule from '@sqlite.org/sqlite-wasm';
 import { log, error } from '../../modules/Logger.js'
+import sqlite3InitModule from '@sqlite.org/sqlite-wasm';
 
 let dbInstance = null;
 let sqlite3 = null;
@@ -13,29 +12,31 @@ function getDB() {
         checkAgain();
     });
 }
+function initDB() {
+    sqlite3InitModule({
+        print: log,
+        printErr: error,
+    }).then((sqlite) => {
+        sqlite3 = sqlite;
+        try {
+            log('Running SQLite3 version', sqlite3.version.libVersion);
+            if ('opfs' in sqlite3) dbInstance = new sqlite3.oo1.OpfsDb('/yhwh-script.sqlite3', 'c'); else throw new Error("OPFS is not available.");
+            log('OPFS is available, created persisted database at', dbInstance.filename);
+        } catch (err) {
+            error(err.name, err.message);
+        }
+    });
+}
 
-sqlite3InitModule({
-    print: log,
-    printErr: error,
-}).then((sqlite) => {
-    sqlite3 = sqlite;
-    try {
-        log('Running SQLite3 version', sqlite3.version.libVersion);
-        log(cwd());
-        if ('opfs' in sqlite3) dbInstance = new sqlite3.oo1.OpfsDb('/yhwh-script.sqlite3', 'c'); else throw new Error("OPFS is not available.");
-        log('OPFS is available, created persisted database at', dbInstance.filename);
-    } catch (err) {
-        error(err.name, err.message);
-    }
-});
+initDB();
 
 onmessage = async function dispatch({ data }) {
     const db = await getDB();
     switch (data.type) {
         case "upload":
             try {
-                sqlite3.oo1.OpfsDb.importDb('jsonly.sqlite3', data.buffer);
-                postMessage("New DB imported as jsonly.sqlite3. (" + data.buffer.byteLength + ") Bytes");
+                sqlite3.oo1.OpfsDb.importDb('yhwh-script.sqlite3', data.buffer);
+                postMessage("New DB imported as yhwh-script.sqlite3. (" + data.buffer.byteLength + ") Bytes");
             } catch (e) {
                 error(e);
             }
@@ -50,6 +51,13 @@ onmessage = async function dispatch({ data }) {
                     postMessage({ type: "application/x-sqlite3", error: "SQLITE_NOMEM" });
                 else
                     error(e);
+            }
+            break;
+        case "reset":
+            try {
+                initDB();
+            } catch (e) {
+                error(e);
             }
             break;
         case "exec":

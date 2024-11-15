@@ -1,13 +1,15 @@
 import { SQLite } from '../services/SQLite.js'
 
-SQLite.executeQuerySync({
-    "text": `
+export function resetAnimals() {
+    SQLite.executeQuerySync({
+        "text": `
 CREATE TABLE IF NOT EXISTS animals (id INTEGER PRIMARY KEY AUTOINCREMENT, animal VARCHAR(255) UNIQUE, sound VARCHAR(255), icon VARCHAR(255) UNIQUE);
 INSERT INTO animals(animal, sound, icon) VALUES 
 ('Alligator','Snap!','🐊'),
 ('Lion','Roaar!','🦁'),
 ('Cat','Meaow!','🐱');`
-});
+    });
+}
 
 export function insertAnimal({ datasetID, animal, sound, icon }) {
     return SQLite.executeQuery({

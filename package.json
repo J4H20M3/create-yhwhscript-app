@@ -1,6 +1,6 @@
 {
   "name": "create-yhwhscript-app",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Set up a YHWH-script web app for HTML Single File Components with one command.",
   "bin": {
     "create-yhwh-project": "./bin/create-yhwhscript-app.mjs"

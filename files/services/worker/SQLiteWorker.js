@@ -33,7 +33,7 @@ initDB();
 onmessage = async function dispatch({ data }) {
     const db = await getDB();
     switch (data.type) {
-        case "upload":
+        case "upload": {
             try {
                 sqlite3.oo1.OpfsDb.importDb('yhwh-script.sqlite3', data.buffer);
                 postMessage("New DB imported as yhwh-script.sqlite3. (" + data.buffer.byteLength + ") Bytes");
@@ -41,7 +41,8 @@ onmessage = async function dispatch({ data }) {
                 error(e);
             }
             break;
-        case "download":
+        }
+        case "download": {
             try {
                 const byteArray = sqlite3.capi.sqlite3_js_db_export(db);
                 const blob = new Blob([byteArray.buffer], { type: "application/x-sqlite3" });
@@ -53,18 +54,21 @@ onmessage = async function dispatch({ data }) {
                     error(e);
             }
             break;
-        case "reset":
+        }
+        case "reset": {
             try {
                 initDB();
             } catch (e) {
                 error(e);
             }
             break;
-        case "exec":
+        }
+        case "exec": {
             log(data.sql);
             const result = db.exec({ sql: data.sql, returnValue: data.returnValue });
             postMessage({ result, type: "application/json", datasetID: data.datasetID });
             break;
+        }
         default:
             log(data)
     }
